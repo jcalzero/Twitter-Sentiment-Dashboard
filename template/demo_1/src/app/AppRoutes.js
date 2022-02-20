@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Spinner from '../app/shared/Spinner';
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'));
+const BasicTable = lazy(() => import('./tables/BasicTable'));
 
 
 
@@ -13,9 +14,6 @@ const Typography = lazy(() => import('./basic-ui/Typography'));
 
 
 const BasicElements = lazy(() => import('./form-elements/BasicElements'));
-
-const BasicTable = lazy(() => import('./tables/BasicTable'));
-
 
 
 const Mdi = lazy(() => import('./icons/Mdi'));
@@ -50,7 +48,7 @@ class AppRoutes extends Component {
 
           <Route path="/form-Elements/basic-elements" component={ BasicElements } />
 
-          <Route path="/tables/basic-table" component={ BasicTable } />
+          <Route path="/trending" component={ BasicTable } />
 
 
           <Route path="/icons/mdi" component={ Mdi } />
