@@ -1,101 +1,68 @@
-# Purple React Free Admin Template
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Purple Admin React Free comes packed with a essential components, UI elements, and built-in sample pages to kick-start your project.
+## Available Scripts
 
-We are excited to share this dashboard with you and look forward to hearing your feedback!
+In the project directory, you can run:
 
-## Demo
+### `npm start`
 
-Visit: https://www.bootstrapdash.com/demo/purple-react-free/template/demo_1/preview/dashboard
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-[![N|Solid](screenshot.png)](https://www.bootstrapdash.com/demo/purple-react-free/template/demo_1/preview/dashboard)
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
 
+### `npm test`
 
-## Credits:
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-.React-bootstrap 
+### `npm run build`
 
-.Material Design Icons
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-.React
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
 
-.Chart.js
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `npm run eject`
 
-## Browser Support: 
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-Chrome (latest)
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-FireFox (latest)
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-Safari (latest)
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-Opera (latest)
+## Learn More
 
-IE10+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-## License Information:
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-Purple Admin React free is released under MIT license. Feel free to download it, use it, share it, and get creative with it.
+### Code Splitting
 
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-## Installation
+### Analyzing the Bundle Size
 
-### What's included
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
+### Making a Progressive Web App
 
-```
-purple-react-free/
-  ├── template
-    ├── demo_1
-        ├── src/
-            ├── app/
-            ├── assets/
-                ├── images/
-                ├── styles/
-            ├── index.js
-        ├── public/
-        ├── .gitignore
-        ├── CHANGELOG.md
-        ├── package.json
-  ├── CHANGELOG.md
-  ├── documentation
-  ├── LICENSE
-  ├── README.md
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
+### Advanced Configuration
 
-```
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
 
-### How to use Purple Admin React?
+### Deployment
 
-``` bash
-# Click the Clone or Download button in GitHub and download as a ZIP file or you can enter the command
-$ git clone https://github.com/BootstrapDash/purple-react-free.git in your terminal to get a copy of this template.
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
-# After the files have been downloaded you will get a folder with all the required files
+### `npm run build` fails to minify
 
-# You can install all the dependencies in the template by running the command 'npm install'. All the required files are in the node modules.
-
-# You can serve the template with the command 'npm start'.
-
-# Now that your project has now kick-started, all you need to do now is to code, code, and code to your heart's content.
-```
-
-
-### How to Contribute?:
-
-``` bash
-# We love your contributions and we welcome them wholeheartedly. We believe the more the merrier. To contribute make sure you have a Node.js and npm installed.
-```
-## Next
-After node and npm have been installed, follow the steps below to contribute.
-
-``` bash
-1 - Fork and clone the repo of Purple React Admin.
-2 - Run the command 'npm install' to install all the dependencies.
-3 - Enter the command 'npm start'. This will open Purple React Admin in your default browser.
-4 - Make your valuable contribution
-5 - Submit a pull request.
-...
-Do you need a template with more features and functionalities? Get more with our collection of the premium template with more plugins, eye catching animations, UI components, and sample pages all fitting together with a high-quality design. Visit https://www.bootstrapdash.com for more admin templates.
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
