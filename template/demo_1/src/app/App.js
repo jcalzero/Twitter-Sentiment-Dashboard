@@ -14,10 +14,10 @@ class App extends Component {
     this.onRouteChanged();
   }
   render () {
-    let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
-    let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
-    let SettingsPanelComponent = !this.state.isFullPageLayout ? <SettingsPanel/> : '';
-    let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
+    let navbarComponent = <Navbar/> ;
+    let sidebarComponent = <Sidebar/>;
+    let SettingsPanelComponent = <SettingsPanel/>;
+    let footerComponent = <Footer/>;
     return (
       <div className="container-scroller">
         { navbarComponent }
