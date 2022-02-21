@@ -49,7 +49,7 @@ class Navbar extends Component {
                 <input
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      this.analyzeTweets(this.state.message);
+                      this.analyzeTweets(e.target.value);
                     }
                   }}
                   type="text"
