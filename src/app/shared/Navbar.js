@@ -51,12 +51,9 @@ class Navbar extends Component {
                   <i className="input-group-text border-0 mdi mdi-magnify"></i>
                 </div>
                 <input
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      this.setState({ message: e.target.value },
-                      () => {
-                          this.analyzeTweets(this.state.message);
-                      });
+                  onKeyPress={(event) => {
+                    if (event.key === "Enter") {
+                      this.analyzeTweets(event.target.value);
                     }
                   }}
                   type="text"
