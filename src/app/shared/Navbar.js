@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SentimentAnalyzer from '../../functions/SentimentAnalyzer';
 
 class Navbar extends Component {
   state = {
@@ -7,6 +8,20 @@ class Navbar extends Component {
 
   submitHandler(event) {
     event.preventDefault();
+  }
+
+  analyzeTweets(keyword) {
+    const analysis = SentimentAnalyzer(keyword);
+
+    if (analysis < 0) {
+      console.log('Negative');
+    };
+    if (analysis === 0) {
+      console.log('Neutral');
+    }
+    if (analysis > 0) {
+      console.log('Positive');
+    }
   }
 
   toggleOffcanvas() {
@@ -40,7 +55,7 @@ class Navbar extends Component {
                     if (e.key === "Enter") {
                       this.setState({ message: e.target.value },
                       () => {
-                          console.log(this.state.message);
+                          this.analyzeTweets(this.state.message);
                       });
                     }
                   }}

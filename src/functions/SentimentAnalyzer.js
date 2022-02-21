@@ -1,21 +1,11 @@
-import express from 'express';
 import ContractionsToLexicon from 'apos-to-lex-form';
 import NaturalLanguageProcessor from 'natural';
-import SpellingCorrector from 'spelling-corrector';
 import StopWord from 'stopword';
 
-const router = express.Router();
-
-const spellCorrector = new SpellingCorrector();
-spellCorrector.loadDictionary();
-
-router.post('/sentimentAnalyzer', function(req, res, next) {
-  const { review } = req.body;
-  /* NORMALIZATION */
-
+function SentimentAnalyzer (keyword) {
   // negation handling
   // convert apostrophe=connecting words to lex form
-  const lexedReview = ContractionsToLexicon(review);
+  const lexedReview = ContractionsToLexicon(keyword);
 
   // casing
   const casedReview = lexedReview.toLowerCase();
@@ -28,11 +18,6 @@ router.post('/sentimentAnalyzer', function(req, res, next) {
   const tokenizer = new WordTokenizer();
   const tokenizedReview = tokenizer.tokenize(alphaOnlyReview);
 
-  // spell correction
-  tokenizedReview.forEach((word, index) => {
-    tokenizedReview[index] = spellCorrector.correct(word);
-  })
-
   // remove stopwords
   const filteredReview = StopWord.removeStopwords(tokenizedReview);
 
@@ -41,7 +26,7 @@ router.post('/sentimentAnalyzer', function(req, res, next) {
 
   const analysis = analyzer.getSentiment(filteredReview);
 
-  res.status(200).json({ analysis });
-});
+  return analysis;
+};
 
-module.exports = router;
+export default SentimentAnalyzer;
