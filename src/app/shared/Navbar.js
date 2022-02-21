@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import SentimentAnalyzer from '../../functions/SentimentAnalyzer';
 
 class Navbar extends Component {
-  state = {
-    message: ""
-  }
-
   submitHandler(event) {
     event.preventDefault();
   }
@@ -53,10 +49,7 @@ class Navbar extends Component {
                 <input
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      this.setState({ message: e.target.value },
-                      () => {
-                          this.analyzeTweets(this.state.message);
-                      });
+                      this.analyzeTweets(this.state.message);
                     }
                   }}
                   type="text"
