@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { ProgressBar } from 'react-bootstrap';
 import {Bar, Doughnut} from 'react-chartjs-2';
-import DatePicker from "react-datepicker";
  
 // import "react-datepicker/dist/react-datepicker.css";
 
