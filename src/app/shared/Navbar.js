@@ -14,13 +14,13 @@ class Navbar extends Component {
     const analysis = SentimentAnalyzer(keyword);
 
     if (analysis < 0) {
-      console.log('Negative');
+      alert('Negative');
     };
     if (analysis === 0) {
-      console.log('Neutral');
+      alert('Neutral');
     }
     if (analysis > 0) {
-      console.log('Positive');
+      alert('Positive');
     }
   }
 
