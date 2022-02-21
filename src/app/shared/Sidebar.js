@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Collapse } from 'react-bootstrap';
-import { Trans } from 'react-i18next';
 
 class Sidebar extends Component {
 
@@ -61,7 +60,7 @@ class Sidebar extends Component {
         <ul className="nav">
           <li className={ this.isPathActive('/dashboard') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/dashboard">
-              <span className="menu-title"><Trans>Dashboard</Trans></span>
+              <span className="menu-title">Dashboard</span>
               <i className="mdi mdi-home menu-icon"></i>
             </Link>
           </li>
@@ -93,7 +92,7 @@ class Sidebar extends Component {
           </li> */}
           <li className={ this.isPathActive('/trending') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/trending">
-              <span className="menu-title"><Trans>Trending</Trans></span>
+              <span className="menu-title">Trending</span>
               <i className="mdi mdi-format-list-bulleted menu-icon"></i>
             </Link>
           </li>
@@ -162,7 +161,7 @@ class Sidebar extends Component {
           </li> */}
           <li className="nav-item">
             <a className="nav-link" href="https://github.com/jcalzero/twitter-way-of-thinking" rel="noopener noreferrer" target="_blank">
-              <span className="menu-title"><Trans>Documentation</Trans></span>
+              <span className="menu-title">Documentation</span>
               <i className="mdi mdi-file-document-box menu-icon"></i>
             </a>
           </li>

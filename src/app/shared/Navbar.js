@@ -1,16 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 class Navbar extends Component {
+  const [inputText, setInputText] = useState("");
+
   toggleOffcanvas() {
     document.querySelector('.sidebar-offcanvas').classList.toggle('active');
   }
+  
   toggleRightSidebar() {
     document.querySelector('.right-sidebar').classList.toggle('open');
   }
 
-  handleSubmit = (searchQuery) => {
-    console.log(searchQuery);
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
   }
 
   render () {
@@ -29,7 +33,7 @@ class Navbar extends Component {
                 <div className="input-group-prepend bg-transparent">
                   <i className="input-group-text border-0 mdi mdi-magnify"></i>
                 </div>
-                <input type="text" className="form-control bg-transparent border-0" placeholder="Search keyword"/>
+                <input type="text" className="form-control bg-transparent border-0" placeholder="Search keyword" value={this.state.value} onChange={this.handleChange}/>
               </div>
             </form>
           </div>
