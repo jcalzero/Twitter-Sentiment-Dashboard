@@ -15,7 +15,7 @@
     -moz-transition: width $action-transition-duration $action-transition-timing-function, background $action-transition-duration $action-transition-timing-function;
     -ms-transition: width $action-transition-duration $action-transition-timing-function, background $action-transition-duration $action-transition-timing-function;
     background: $navbar-bg;
-    width: $sidebar-width-lg;
+    width: $sidebar-logo-width-lg;
     height: $navbar-height;
     :host-context(.sidebar-dark) & {
       background: $sidebar-dark-bg;
