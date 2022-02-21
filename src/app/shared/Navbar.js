@@ -8,6 +8,11 @@ class Navbar extends Component {
   toggleRightSidebar() {
     document.querySelector('.right-sidebar').classList.toggle('open');
   }
+
+  handleSubmit = (searchQuery) => {
+    console.log(searchQuery);
+  }
+
   render () {
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -19,7 +24,7 @@ class Navbar extends Component {
             <span className="mdi mdi-menu"></span>
           </button>
           <div className="search-field d-none d-md-block w-100">
-            <form className="d-flex align-items-center h-100" action="#">
+            <form className="d-flex align-items-center h-100" onSubmit={this.handleSubmit}>
               <div className="input-group">
                 <div className="input-group-prepend bg-transparent">
                   <i className="input-group-text border-0 mdi mdi-magnify"></i>
