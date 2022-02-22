@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
-import SentimentAnalyzer from '../../functions/SentimentAnalyzer';
 
 class Navbar extends Component {
   submitHandler(event) {
     event.preventDefault();
   }
 
-  analyzeTweets(keyword) {
-    const analysis = SentimentAnalyzer(keyword);
-
-    if (analysis < 0) {
-      console.log('Negative');
-    };
-    if (analysis === 0) {
-      console.log('Neutral');
+  analyzeTweets(sentence) {
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({ sentence }),
+      headers: new Headers({ 'Content-Type': 'application/json' })
     }
-    if (analysis > 0) {
-      console.log('Positive');
-    }
+  
+    fetch('/analyze', options)
+      .then(res => res.json())
+      .then (({ sentiment_score }) => {
+        if (sentiment_score < 0) {
+          console.log('Negative');
+        };
+        if (sentiment_score === 0) {
+          console.log('Neutral');
+        }
+        if (sentiment_score > 0) {
+          console.log('Positive');
+        }
+      })
+      .catch(err => {
+        console.log('There was an error processing your request!');
+      })
   }
 
   toggleOffcanvas() {
