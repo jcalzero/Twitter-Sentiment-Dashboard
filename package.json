@@ -61,10 +61,10 @@
   "scripts": {
     "start-react": "react-scripts start",
     "build-react": "react-scripts build",
+    "build": "react-scripts build && nodemon server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "nodemon server.js",
-    "heroku-postbuild": "react-scripts build"
+    "start": "nodemon server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
