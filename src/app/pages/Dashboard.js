@@ -158,7 +158,7 @@ function Dashboard() {
               <h4 className="font-weight-normal mb-3">Overall Sentiment <i className="mdi mdi-chart-line mdi-24px float-right"></i>
               </h4>
               <h2 className="mb-5">{sentiment.toUpperCase()}</h2>
-              <h6 className="card-text">Increased by 60%</h6>
+              <h6 className="card-text">Highest level of sentiment from 100 tweets pulled</h6>
             </div>
           </div>
         </div>
@@ -166,10 +166,10 @@ function Dashboard() {
           <div className="card bg-gradient-dark card-img-holder text-white">
             <div className="card-body">
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
-              <h4 className="font-weight-normal mb-3">Weekly Orders <i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+              <h4 className="font-weight-normal mb-3">Level of Polarity <i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
               </h4>
-              <h2 className="mb-5">45,6334</h2>
-              <h6 className="card-text">Decreased by 10%</h6>
+              <h2 className="mb-5">3.41</h2>
+              <h6 className="card-text">How polarized are the tweets</h6>
             </div>
           </div>
         </div>
@@ -177,10 +177,10 @@ function Dashboard() {
           <div className="card bg-gradient-primary card-img-holder text-white">
             <div className="card-body">
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
-              <h4 className="font-weight-normal mb-3">Visitors Online <i className="mdi mdi-diamond mdi-24px float-right"></i>
+              <h4 className="font-weight-normal mb-3">Possible Outreach <i className="mdi mdi-diamond mdi-24px float-right"></i>
               </h4>
-              <h2 className="mb-5">95,5741</h2>
-              <h6 className="card-text">Increased by 5%</h6>
+              <h2 className="mb-5">955,741</h2>
+              <h6 className="card-text">Number of Followers per User</h6>
             </div>
           </div>
         </div>
