@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class BasicTable extends Component {
+export class Trending extends Component {
   render() {
     return (
       <div>
@@ -76,4 +76,4 @@ export class BasicTable extends Component {
   }
 }
 
-export default BasicTable
+export default Trending;

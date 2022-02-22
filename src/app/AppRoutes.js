@@ -1,19 +1,18 @@
 import React, { Component,Suspense, lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import Spinner from './subcomponents/Spinner';
 
-import Spinner from '../app/shared/Spinner';
-
-const Dashboard = lazy(() => import('./dashboard/Dashboard'));
-const BasicTable = lazy(() => import('./tables/BasicTable'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const BasicTable = lazy(() => import('./pages/Trending'));
 
 class AppRoutes extends Component {
   render () {
     return (
       <Suspense fallback={<Spinner/>}>
         <Switch>
-          <Route exact path="/dashboard" component={ Dashboard } />
+          <Route exact path="/dashboard/:keyword" component={ Dashboard } />
           <Route path="/trending" component={ BasicTable } />
-          <Redirect to="/dashboard" />
+          <Redirect to="/dashboard/hello%20world" />
         </Switch>
       </Suspense>
     );
