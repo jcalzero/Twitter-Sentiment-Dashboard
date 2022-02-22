@@ -45,7 +45,7 @@ function Navbar() {
   
   return (
     <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row flex-nowrap justify-content-start">
-      <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+      <div className="text-center navbar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center">
         <img src={require('../../assets/images/TwitSent.png')} alt="logo" width={50} length={50}/>
       </div>
       <div className="navbar-menu-wrapper d-flex w-100 align-items-stretch">

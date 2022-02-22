@@ -12,7 +12,7 @@ class AppRoutes extends Component {
         <Switch>
           <Route exact path="/dashboard/:keyword" component={ Dashboard } />
           <Route path="/trending" component={ BasicTable } />
-          <Redirect to="/dashboard" />
+          <Redirect to="/dashboard/hello%20world" />
         </Switch>
       </Suspense>
     );

@@ -4,7 +4,6 @@ import { useParams } from 'react-router';
 
 function Dashboard() {
   const { keyword = '' } = useParams();
-
   const chartRef = useRef();
 
   const positive = '#1bcfb4';
@@ -134,13 +133,23 @@ function Dashboard() {
     ]
   });
 
+  if (keyword === 'hello world') {
+    return (
+      <div className="page-header">
+        <h3 className="page-title align-text-center">
+          Type in a keyword, hit enter, and watch us do our magic <span role="img" aria-label="magic-ball">🔮</span>
+        </h3>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="page-header">
         <h3 className="page-title">
           <span className="page-title-icon bg-gradient-primary text-white mr-2">
             <i className="mdi mdi-home"></i>
-          </span> {'Sentiment Results: '} <span className={`text-${sentiment === 'positive' ? 'success' : sentiment === 'neutral' ? 'warning' : 'danger'}`}>{String(keyword)}</span>
+          </span> {'Analysis: '} <span className={`text-${sentiment === 'positive' ? 'success' : sentiment === 'neutral' ? 'warning' : 'danger'}`}>{String(keyword)}</span>
         </h3>
         <nav aria-label="breadcrumb">
           <ul className="breadcrumb">
@@ -155,7 +164,7 @@ function Dashboard() {
           <div className={`card bg-gradient-${sentiment === 'positive' ? 'success' : sentiment === 'neutral' ? 'warning' : 'danger'} card-img-holder text-white`}>
             <div className="card-body">
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
-              <h4 className="font-weight-normal mb-3">Overall Sentiment <i className="mdi mdi-chart-line mdi-24px float-right"></i>
+              <h4 className="font-weight-normal mb-3">Sentiment <i className="mdi mdi-chart-line mdi-24px float-right"></i>
               </h4>
               <h2 className="mb-5">{sentiment.toUpperCase()}</h2>
               <h6 className="card-text">Highest level of sentiment from 100 tweets pulled</h6>
@@ -166,7 +175,7 @@ function Dashboard() {
           <div className="card bg-gradient-dark card-img-holder text-white">
             <div className="card-body">
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
-              <h4 className="font-weight-normal mb-3">Level of Polarity <i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+              <h4 className="font-weight-normal mb-3">Polarity <i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
               </h4>
               <h2 className="mb-5">3.41</h2>
               <h6 className="card-text">How polarized are the tweets</h6>
@@ -177,7 +186,7 @@ function Dashboard() {
           <div className="card bg-gradient-primary card-img-holder text-white">
             <div className="card-body">
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
-              <h4 className="font-weight-normal mb-3">Possible Outreach <i className="mdi mdi-diamond mdi-24px float-right"></i>
+              <h4 className="font-weight-normal mb-3">Outreach <i className="mdi mdi-diamond mdi-24px float-right"></i>
               </h4>
               <h2 className="mb-5">955,741</h2>
               <h6 className="card-text">Number of Followers per User</h6>
@@ -241,58 +250,46 @@ function Dashboard() {
         <div className="col-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Recent Tickets</h4>
+              <h4 className="card-title">Top Tweets</h4>
               <div className="table-responsive">
                 <table className="table">
                   <thead>
                     <tr>
-                      <th> Assignee </th>
-                      <th> Subject </th>
-                      <th> Status </th>
-                      <th> Last Update </th>
-                      <th> Tracking ID </th>
+                      <th> User </th>
+                      <th> Tweet </th>
+                      <th> Tweeted On </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>
-                        <img src={require("../../assets/images/faces/face1.jpg")} className="mr-2" alt="face" /> David Grey </td>
+                        <img src={require("../../assets/images/faces/face1.jpg")} className="mr-2" alt="face" /> @DavidGrey </td>
                       <td> Fund is not recieved </td>
-                      <td>
-                        <label className="badge badge-gradient-success">DONE</label>
-                      </td>
                       <td> Dec 5, 2017 </td>
-                      <td> WD-12345 </td>
                     </tr>
                     <tr>
                       <td>
-                        <img src={require("../../assets/images/faces/face2.jpg")} className="mr-2" alt="face" /> Stella Johnson </td>
+                        <img src={require("../../assets/images/faces/face2.jpg")} className="mr-2" alt="face" /> @StellaJohnson </td>
                       <td> High loading time </td>
-                      <td>
-                        <label className="badge badge-gradient-warning">PROGRESS</label>
-                      </td>
                       <td> Dec 12, 2017 </td>
-                      <td> WD-12346 </td>
                     </tr>
                     <tr>
                       <td>
-                        <img src={require("../../assets/images/faces/face3.jpg")} className="mr-2" alt="face" /> Marina Michel </td>
+                        <img src={require("../../assets/images/faces/face3.jpg")} className="mr-2" alt="face" /> @MarinaMichel </td>
                       <td> Website down for one week </td>
-                      <td>
-                        <label className="badge badge-gradient-info">ON HOLD</label>
-                      </td>
                       <td> Dec 16, 2017 </td>
-                      <td> WD-12347 </td>
                     </tr>
                     <tr>
                       <td>
-                        <img src={require("../../assets/images/faces/face4.jpg")} className="mr-2" alt="face" /> John Doe </td>
+                        <img src={require("../../assets/images/faces/face4.jpg")} className="mr-2" alt="face" /> @JohnDoe </td>
                       <td> Loosing control on server </td>
-                      <td>
-                        <label className="badge badge-gradient-danger">REJECTED</label>
-                      </td>
                       <td> Dec 3, 2017 </td>
-                      <td> WD-12348 </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img src={require("../../assets/images/faces/face5.jpg")} className="mr-2" alt="face" /> @MarylinAbs </td>
+                      <td> Music make me lose control </td>
+                      <td> Dec 3, 2017 </td>
                     </tr>
                   </tbody>
                 </table>
