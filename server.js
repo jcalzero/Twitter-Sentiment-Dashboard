@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/",express.static(__dirname + "/src"));
+app.use("/",express.static(__dirname + "/build"));
 
 app.post("/analyze", (request, response)=>{
   const { sentence } = request.body;
@@ -42,6 +42,11 @@ app.post("/analyze", (request, response)=>{
       message: "Data received",
       sentiment_score: analysis_score
   })
+});
+
+// Right before your app.listen(), add this:
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 // Listen
