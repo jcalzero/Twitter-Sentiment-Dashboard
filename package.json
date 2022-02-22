@@ -1,6 +1,7 @@
 {
   "name": "twitsent-dashboard",
   "version": "0.0.1",
+  "homepage": ".",
   "private": false,
   "dependencies": {
     "@mdi/font": "^4.2.95",
