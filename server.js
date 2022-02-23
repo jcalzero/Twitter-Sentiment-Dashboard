@@ -14,7 +14,28 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/",express.static(__dirname + "/build"));
 
 app.post("/analyze", (request, response)=>{
-  const { sentence } = request.body;
+  let { sentence } = request.body;
+
+  // remove @'s
+  sentence = sentence.replace(/(?:@)[\n\S]+/g, '');
+
+  // remove @RTs
+  sentence = sentence.replace(/RT/g, '');
+
+  // remove hashtags
+  sentence = sentence.replace(/(?:#)[\n\S]+/g, '');
+
+  // remove links with http
+  sentence = sentence.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+
+  // remove links with http
+  sentence = sentence.replace(/(?:www.)[\n\S]+/g, '');
+
+  // remove emojis
+  sentence = sentence.replace(/[^\sA-Z]/gi, '').replace(/ +/g, ' ');
+
+  // trim whitespace
+  sentence = sentence.trim();
 
   // negation handling
   // convert apostrophe=connecting words to lex form
