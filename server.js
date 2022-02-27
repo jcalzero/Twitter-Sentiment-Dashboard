@@ -27,6 +27,11 @@ app.post("/analyze", (request, response)=>{
   let { keyword } = request.body;
   let tweets = [];
 
+  let totalOutreach = 0;
+  let numPositive = 0;
+  let numNeutral = 0;
+  let numNegative = 0;
+
   (async () => {
     try {
       tweets = await getNonRetweetedTweetsByKeywordsAndDate(keyword);
@@ -36,13 +41,25 @@ app.post("/analyze", (request, response)=>{
       const analysisOfTweets = [];
 
       tweets.forEach((tweet) => {
+        totalOutreach += tweet.user.followers_count;
         const cleanedTweet = clean(tweet.text);
-        analysisOfTweets.push(Sentianalyzer.getSentiment(cleanedTweet));
+        const analysisScore = Sentianalyzer.getSentiment(cleanedTweet);
+        analysisOfTweets.push(analysisScore);
+
+        if (analysisScore > 0) {
+          numPositive++;
+        } else if (analysisScore === 0) {
+          numNeutral++;
+        } else if (analysisScore < 0) {
+          numNegative++;
+        }
       });
 
       response.status(200).json({
           message: "Data received",
-          sentiment_score: overallSentimentScore(analysisOfTweets)
+          sentiment_score: overallSentimentScore(analysisOfTweets),
+          outreach: totalOutreach,
+          splits: [numPositive, numNeutral, numNegative, numPositive + numNeutral + numNegative]
       })
     } catch (error) {
       response.status(501);

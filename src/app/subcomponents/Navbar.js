@@ -21,7 +21,7 @@ function Navbar() {
   
     fetch('/analyze', options)
       .then(res => res.json())
-      .then (({ sentiment_score }) => {
+      .then (({ sentiment_score, outreach, splits }) => {
         if (sentiment_score < 0) {
           console.log('Negative');
         };
@@ -31,6 +31,8 @@ function Navbar() {
         if (sentiment_score > 0) {
           console.log('Positive');
         }
+        console.log(outreach);
+        console.log(splits);
       })
       .catch(err => {
         console.log('There was an error processing your request!');
