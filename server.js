@@ -4,6 +4,7 @@ const natural = require('natural');
 const stopword = require('stopword');
 const path = require('path');
 const axios = require('axios');
+require('dotenv').config();
 
 // Port
 const PORT = process.env.PORT || 8080;
@@ -37,7 +38,7 @@ app.post("/analyze", (request, response)=>{
       tweets.forEach((tweet) => {
         const cleanedTweet = clean(tweet.text);
         analysisOfTweets.push(Sentianalyzer.getSentiment(cleanedTweet));
-      })
+      });
 
       response.status(200).json({
           message: "Data received",
@@ -129,13 +130,13 @@ const clean = (tweet) => {
 };
 
 const overallSentimentScore = (analysisScores) => {
-  var sum = 0;
+  let sum = 0;
 
   for(var i = 0; i < analysisScores.length; i++){
     if (analysisScores[i]) {
-      sum += parseInt(analysisScores[i], 10);
+      sum += analysisScores[i], 10;
     }
   }
 
-  return (sum);
+  return ((Math.round(sum * 100) / 100).toFixed(2));
 };
