@@ -9,15 +9,13 @@ function Navbar() {
   }
 
   function analyzeTweets(keyword) {
-    const sentence = keyword;
-
     history.push({
       pathname: `/dashboard/${keyword}`
     });
 
     const options = {
       method: 'POST',
-      body: JSON.stringify({ sentence }),
+      body: JSON.stringify({ keyword }),
       headers: new Headers({ 'Content-Type': 'application/json' })
     }
   

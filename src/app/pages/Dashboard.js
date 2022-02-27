@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {Bar, Doughnut} from 'react-chartjs-2';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import { useParams } from 'react-router';
 
 function Dashboard() {
