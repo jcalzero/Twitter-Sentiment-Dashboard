@@ -10,8 +10,11 @@ function Dashboard() {
   const neutral = '#fed713';
   const negative = '#fe7c96';
 
-  const sentimentArr = ['positive', 'neutral', 'negative'];
-  const sentiment = sentimentArr[Math.floor(Math.random() * 3)];
+  if (keyword !== 'hello world') {
+    analyzeTweets(keyword);
+  }
+  
+  const tweetsAnalysis = JSON.parse(window.localStorage.getItem('tweetSentimentData'));
 
   const [trafficOptions] = useState({
     responsive: true,
@@ -104,7 +107,7 @@ function Dashboard() {
 
   const [trafficData] = useState({
     datasets: [{
-      data: [30, 30, 40],
+      data: [(tweetsAnalysis.splits[0] / tweetsAnalysis.splits[3]) * 100, tweetsAnalysis.splits[1] / tweetsAnalysis.splits[3], tweetsAnalysis.splits[2]] / tweetsAnalysis.splits[3],
         backgroundColor: [
           positive,
           neutral,
@@ -149,7 +152,7 @@ function Dashboard() {
         <h3 className="page-title">
           <span className="page-title-icon bg-gradient-primary text-white mr-2">
             <i className="mdi mdi-home"></i>
-          </span> {'Analysis: '} <span className={`text-${sentiment === 'positive' ? 'success' : sentiment === 'neutral' ? 'warning' : 'danger'}`}>{String(keyword)}</span>
+          </span> {'Analysis: '} <span className={`text-${tweetsAnalysis.sentiment === 'Positive' ? 'success' : tweetsAnalysis.sentiment === 'Neutral' ? 'warning' : 'danger'}`}>{String(keyword)}</span>
         </h3>
         <nav aria-label="breadcrumb">
           <ul className="breadcrumb">
@@ -161,13 +164,13 @@ function Dashboard() {
       </div>
       <div className="row">
         <div className="col-md-4 stretch-card grid-margin">
-          <div className={`card bg-gradient-${sentiment === 'positive' ? 'success' : sentiment === 'neutral' ? 'warning' : 'danger'} card-img-holder text-white`}>
+          <div className={`card bg-gradient-${tweetsAnalysis.sentiment === 'Positive' ? 'success' : tweetsAnalysis.sentiment === 'Neutral' ? 'warning' : 'danger'} card-img-holder text-white`}>
             <div className="card-body">
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
               <h4 className="font-weight-normal mb-3">Sentiment <i className="mdi mdi-chart-line mdi-24px float-right"></i>
               </h4>
-              <h2 className="mb-5">{sentiment.toUpperCase()}</h2>
-              <h6 className="card-text">Highest level of sentiment from 100 tweets pulled</h6>
+              <h2 className="mb-5">{tweetsAnalysis.sentiment}</h2>
+              <h6 className="card-text">Highest level of sentiment from 1000 tweets pulled</h6>
             </div>
           </div>
         </div>
@@ -177,8 +180,8 @@ function Dashboard() {
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
               <h4 className="font-weight-normal mb-3">Polarity <i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
               </h4>
-              <h2 className="mb-5">3.41</h2>
-              <h6 className="card-text">How polarized are the tweets</h6>
+              <h2 className="mb-5">{tweetsAnalysis.sentiment_score}</h2>
+              <h6 className="card-text">Sum of polarity levels per tweet</h6>
             </div>
           </div>
         </div>
@@ -188,7 +191,7 @@ function Dashboard() {
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
               <h4 className="font-weight-normal mb-3">Outreach <i className="mdi mdi-diamond mdi-24px float-right"></i>
               </h4>
-              <h2 className="mb-5">955,741</h2>
+              <h2 className="mb-5">{tweetsAnalysis.outreach}</h2>
               <h6 className="card-text">Number of Followers per User</h6>
             </div>
           </div>
@@ -303,3 +306,29 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+const analyzeTweets = (keyword) => {
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({ keyword }),
+    headers: new Headers({ 'Content-Type': 'application/json' })
+  }
+
+  fetch('/analyze', options)
+    .then(res => res.json())
+    .then (({ sentiment, sentiment_score, outreach, splits, topTweeters }) => {
+      const tweetSentimentData = {
+        keyword,
+        sentiment,
+        sentiment_score,
+        outreach,
+        splits,
+        topTweeters
+      };
+
+      window.localStorage.setItem('tweetSentimentData', JSON.stringify(tweetSentimentData));
+    })
+    .catch(err => {
+      console.log('There was an error processing your request!');
+    })
+}

@@ -25,6 +25,8 @@ const defaultFetchOptions = {
 
 app.post("/analyze", (request, response)=>{
   let { keyword } = request.body;
+
+  const tweetersList = [];
   let tweets = [];
 
   let totalOutreach = 0;
@@ -53,13 +55,25 @@ app.post("/analyze", (request, response)=>{
         } else if (analysisScore < 0) {
           numNegative++;
         }
+
+        const foundTweeter = tweetersList.find(user => user.screenName === tweet.user.screen_name);
+
+        if (foundTweeter) {
+          foundTweeter.numOfTweets++;
+        } else {
+          tweetersList.push({screenName: tweet.user.screen_name, numOfTweets: 1, latestTweeted: tweet.createdAt});
+        }
       });
+
+      const topTweeters = getTopTweetersList(tweetersList);
 
       response.status(200).json({
           message: "Data received",
+          sentiment: getSentimentAnalysis(overallSentimentScore(analysisOfTweets)),
           sentiment_score: overallSentimentScore(analysisOfTweets),
           outreach: totalOutreach,
-          splits: [numPositive, numNeutral, numNegative, numPositive + numNeutral + numNegative]
+          splits: [numPositive, numNeutral, numNegative, numPositive + numNeutral + numNegative],
+          topTweeters
       })
     } catch (error) {
       response.status(501);
@@ -155,5 +169,41 @@ const overallSentimentScore = (analysisScores) => {
     }
   }
 
-  return ((Math.round(sum * 100) / 100).toFixed(2));
+  return ((Math.round(sum) / analysisScores.length).toFixed(2));
 };
+
+const findTopTweeter = (tweeterList) => {
+  return (tweeterList.reduce(function(prev, current) {
+      return (prev.y > current.y) ? prev : current
+    })
+  );
+}
+
+const getTopTweetersList = (tweetersList) => {
+  const topTweeter = findTopTweeter(tweetersList);
+  let topTweeters = [];
+
+  topTweeters.push(topTweeter);
+
+  if (topTweeter.numOfTweets === 1) {
+    topTweeters = [tweetersList[0], tweetersList[1], tweetersList[2], tweetersList[3], tweetersList[4]]
+  } else {
+    for (let step = 0; step < 3; step++) {
+      tweetersList.splice(tweetersList.findIndex(tweeter => tweeter === topTweeter), 1);
+      const topTweeter = findTopTweeter(tweetersList);
+      topTweeters.push(topTweeter);
+    };
+  };
+
+  return topTweeters;
+};
+
+const getSentimentAnalysis = (sentimentScore) => {
+  if (sentimentScore < 0) {
+    return 'Negative';
+  } else if (sentimentScore === 0) {
+    return 'Neutral';
+  } else if (sentimentScore > 0) {
+    return 'Positive';
+  }
+}
