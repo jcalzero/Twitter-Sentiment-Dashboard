@@ -3,22 +3,21 @@ import { Bar, Doughnut } from 'react-chartjs-2';
 import { useParams } from 'react-router';
 
 export default function Dashboard() {
+  const { keyword = '' } = useParams();
   const [tweetSentimentData, setTweetSentimentData] = useState();
   const [loading, setLoading] = useState(false);
   const positive = '#1bcfb4';
   const neutral = '#fed713';
   const negative = '#fe7c96';
 
-  const { keyword = '' } = useParams();
-
   const chartRef = useRef();
 
-  const getTweetAnalysis = useCallback(() => {
+  const getTweetAnalysis = async () => {
     setLoading(true);
     analyzeTweets(keyword)
       .then((analysis) => setTweetSentimentData(analysis))
       .then(() => setLoading(false));
-  }, []);
+  };
 
   useEffect(() => {
     if (keyword !== 'hello world') {
