@@ -5,6 +5,7 @@
 1. [Overview](#Overview)
 2. [How to Use the Live Dashboard](#How-to-Use-the-Live-Dashboard)
 3. [How to Use the Dashboard Locally](#How-to-Use-the-Dashboard-Locally)
+4. [Future Improvements](#Future-Improvements)
 
 ## Overview
 
@@ -38,3 +39,29 @@ https://user-images.githubusercontent.com/47018214/166831102-d8e86caa-954a-46dc-
 ### What should pop up on your browser
 
 ![Local Dashboard](https://user-images.githubusercontent.com/47018214/166832050-0e2c0a9c-5da5-4c82-a441-c4a99612a6e4.png)
+
+## Future Improvements
+```
+1. Clicking trending topics row will automatically trigger a search for that topic
+
+2. Cron job to harvest trending topics throughout the day so the Trending Topics page will
+   show if the topic has risen or fallen in relevancy
+   
+3. Adding Twitter User Authentication
+
+4. Extending the API Call to get more tweets (depends on Improvement Number 3 above)
+
+5. Search history by User (depends on Improvement Number 3 above)
+
+6. Dark Mode
+
+7. Additional more powerful analytics
+
+8. Adding link to latest tweets table so clicking on a row will take you to the full tweet on Twitter
+
+9. Training Natural Language Processing model for higher accuracy of sentiment analysis
+
+10. Trending topics queried by User Location rather than just the United States
+
+11. Adding API documentation so it can be used publicly outside of the dashboard
+```
