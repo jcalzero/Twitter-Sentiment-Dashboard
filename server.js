@@ -4,7 +4,6 @@ const natural = require('natural');
 const stopword = require('stopword');
 const path = require('path');
 const axios = require('axios');
-const moment = require('moment');
 require('dotenv').config();
 
 // Port
