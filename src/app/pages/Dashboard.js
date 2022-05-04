@@ -59,6 +59,11 @@ export default function Dashboard() {
   const negativePercentage = Math.floor((tweetSentimentData.splits[2] / tweetSentimentData.splits[3]) * 100);
   const neutralPercentage = Math.ceil((tweetSentimentData.splits[1] / tweetSentimentData.splits[3]) * 100);
 
+  // Find the highest number in all the arrays then round it to the nearest 10 and add 20
+  const barChartMax = (Math.ceil(Math.max(...[Math.max(...tweetSentimentData.positiveData),
+                                  Math.max(...tweetSentimentData.negativeData),
+                                  Math.max(...tweetSentimentData.neutralData)]) / 10) * 10) + 20
+
   const pieChartOptions = {
     responsive: true,
     animation: {
@@ -73,10 +78,11 @@ export default function Dashboard() {
       yAxes: [{
         ticks: {
           beginAtZero: true,
-          display:false,
+          display: true,
           min: 0,
           stepSize: 20,
-          max: 80
+          max: barChartMax % 20 === 0 ? barChartMax : barChartMax + 10, // ensure that it is always a step of 20
+          fontColor: "#9c9fa6"
         },
         gridLines: {
           drawBorder: false,
@@ -86,7 +92,7 @@ export default function Dashboard() {
       }],
       xAxes: [{
         gridLines: {
-          display:false,
+          display: false,
           drawBorder: false,
           color: 'rgba(0,0,0,1)',
           zeroLineColor: 'rgba(235,237,242,1)'
