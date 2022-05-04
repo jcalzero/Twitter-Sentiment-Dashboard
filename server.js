@@ -36,20 +36,30 @@ app.get("/analyze", (request, response) => {
       // Analyze
       const Sentianalyzer = new natural.SentimentAnalyzer('English', natural.PorterStemmer, 'afinn');
       const analysisOfTweets = [];
+      let positiveArr = [0, 0, 0, 0, 0, 0, 0, 0];
+      let negativeArr = [0, 0, 0, 0, 0, 0, 0, 0];
+      let neutralArr = [0, 0, 0, 0, 0, 0, 0, 0];
 
       tweets.forEach((tweet) => {
         totalOutreach += tweet.user.followers_count;
         const cleanedTweet = clean(tweet.text);
         const analysisScore = Sentianalyzer.getSentiment(cleanedTweet);
+        let sentiment = '';
+
         analysisOfTweets.push(analysisScore);
 
         if (analysisScore > 0) {
           numPositive++;
+          sentiment = 'Positive'
         } else if (analysisScore === 0) {
           numNeutral++;
+          sentiment = 'Neutral'
         } else if (analysisScore < 0) {
           numNegative++;
+          sentiment = 'Negative'
         }
+
+        positiveArr, negativeArr, neutralArr = parseTweetElapsedSentimentForBarChart(tweet.created_at, sentiment, positiveArr, negativeArr, neutralArr)
 
         tweetersList.push({screenName: tweet.user.screen_name, tweet: tweet.text, latestTweeted: parseTwitterDate(tweet.created_at), profileImageUrl: tweet.user.profile_image_url});
       });
@@ -60,9 +70,13 @@ app.get("/analyze", (request, response) => {
           sentiment_score: overallSentimentScore(analysisOfTweets),
           outreach: totalOutreach,
           splits: [numPositive, numNeutral, numNegative, numPositive + numNeutral + numNegative],
-          latestTweets: [tweetersList[0], tweetersList[1], tweetersList[2], tweetersList[3], tweetersList[4]]
+          latestTweets: [tweetersList[0], tweetersList[1], tweetersList[2], tweetersList[3], tweetersList[4]],
+          positiveData: positiveArr,
+          negativeData: negativeArr,
+          neutralData: neutralArr
       })
     } catch (error) {
+      console.log(error)
       response.status(500).json({ error: 'Exceeded Twitter Rate Limit' });
     }
   })();
@@ -207,4 +221,46 @@ const parseTwitterDate = (tdate) => {
   if (diff < 604800) {return Math.round(diff / 86400) + ' days ago';}
   if (diff <= 777600) {return '1 week ago';}
   return 'on ' + systemDate;
+}
+
+const parseTweetElapsedSentimentForBarChart = (tdate, sentiment, positiveArr, negativeArr, neutralArr) => {
+  const systemDate = new Date(Date.parse(tdate));
+  const userDate = new Date();
+  const diff = Math.floor((userDate - systemDate) / 1000);
+  let done = false;
+
+  if (diff <= 60) {
+    sentiment === 'Positive' ? positiveArr[7]++ : sentiment === 'Negative' ? negativeArr[7]++ : neutralArr[7]++;
+    done = true
+  }
+  if (!done && diff <= 300) {
+    sentiment === 'Positive' ? positiveArr[6]++ : sentiment === 'Negative' ? negativeArr[6]++ : neutralArr[6]++;
+    done = true
+  }
+  if (!done && diff <= 600) {
+    sentiment === 'Positive' ? positiveArr[5]++ : sentiment === 'Negative' ? negativeArr[5]++ : neutralArr[5]++;
+    done = true
+  }
+  if (!done && diff <= 1800) {
+    sentiment === 'Positive' ? positiveArr[4]++ : sentiment === 'Negative' ? negativeArr[4]++ : neutralArr[4]++;
+    done = true
+  }
+  if (!done && diff <= 3600) {
+    sentiment === 'Positive' ? positiveArr[3]++ : sentiment === 'Negative' ? negativeArr[3]++ : neutralArr[3]++;
+    done = true
+  }
+  if (!done && diff <= 43200) {
+    sentiment === 'Positive' ? positiveArr[2]++ : sentiment === 'Negative' ? negativeArr[2]++ : neutralArr[2]++;
+    done = true
+  }
+  if (!done && diff <= 86400) {
+    sentiment === 'Positive' ? positiveArr[1]++ : sentiment === 'Negative' ? negativeArr[1]++ : neutralArr[1]++;
+    done = true
+  }
+  if (!done && diff <= 604800) {
+    sentiment === 'Positive' ? positiveArr[0]++ : sentiment === 'Negative' ? negativeArr[0]++ : neutralArr[0]++;
+    done = true
+  }
+
+  return positiveArr, negativeArr, neutralArr;
 }

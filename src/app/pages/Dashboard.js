@@ -59,7 +59,7 @@ export default function Dashboard() {
   const negativePercentage = Math.floor((tweetSentimentData.splits[2] / tweetSentimentData.splits[3]) * 100);
   const neutralPercentage = Math.ceil((tweetSentimentData.splits[1] / tweetSentimentData.splits[3]) * 100);
 
-  const trafficOptions = {
+  const pieChartOptions = {
     responsive: true,
     animation: {
       animateScale: true,
@@ -68,7 +68,7 @@ export default function Dashboard() {
     legend: false,
   };
 
-  const visitSaleOptions = {
+  const barChartOptions = {
     scales: {
       yAxes: [{
         ticks: {
@@ -110,8 +110,8 @@ export default function Dashboard() {
     }
   };
   
-  const visitSaleData = {
-    labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG'],
+  const barChartData = {
+    labels: ['Last Week', 'Last Day', 'Last 12 Hours', 'Last Hour', 'Last 30 Mins', 'Last 10 Mins', 'Last 5 Mins', 'Last Min'],
     datasets: [
       {
         label: "Positive",
@@ -122,7 +122,7 @@ export default function Dashboard() {
         pointRadius: 0,
         fill: false,
         borderWidth: 1,
-        data: [20, 40, 15, 35, 25, 50, 30, 20]
+        data: tweetSentimentData.positiveData
       },
       {
         label: "Neutral",
@@ -133,7 +133,7 @@ export default function Dashboard() {
         pointRadius: 0,
         fill: false,
         borderWidth: 1,
-        data: [40, 30, 20, 10, 50, 15, 35, 40]
+        data: tweetSentimentData.neutralData
       },
       {
         label: "Negative",
@@ -144,12 +144,12 @@ export default function Dashboard() {
         pointRadius: 0,
         fill: false,
         borderWidth: 1,
-        data: [70, 10, 30, 40, 25, 50, 15, 30]
+        data: tweetSentimentData.negativeData
       }
     ]
   };
 
-  const trafficData = {
+  const pieChartData = {
     datasets: [{
       data: [positivePercentage, neutralPercentage, negativePercentage],
         backgroundColor: [
@@ -254,7 +254,7 @@ export default function Dashboard() {
                   </ul>
                 </div>
               </div>
-              <Bar ref={chartRef} className="chartLegendContainer" data={visitSaleData} options={visitSaleOptions} id="visitSaleChart"/>
+              <Bar ref={chartRef} className="chartLegendContainer" data={barChartData} options={barChartOptions} id="sentimentStatisticsChart"/>
             </div>
           </div>
         </div>
@@ -262,7 +262,7 @@ export default function Dashboard() {
           <div className="card">
             <div className="card-body">
               <h4 className="card-title">Sentiment Breakdown</h4>
-              <Doughnut data={trafficData} options={trafficOptions} />
+              <Doughnut data={pieChartData} options={pieChartOptions} />
               <div id="traffic-chart-legend" className="rounded-legend legend-vertical legend-bottom-left pt-4">
                 <ul>
                   <li>
@@ -353,14 +353,17 @@ async function analyzeTweets(keyword) {
       
       throw new Error('Exceeded Twitter API Rate Limit');
     })
-    .then(({ sentiment, sentiment_score, outreach, splits, latestTweets }) => {
+    .then(({ sentiment, sentiment_score, outreach, splits, latestTweets, positiveData, negativeData, neutralData }) => {
       const tweetSentimentData = {
         keyword,
         sentiment,
         sentiment_score,
         outreach,
         splits,
-        latestTweets
+        latestTweets,
+        positiveData,
+        negativeData,
+        neutralData
       };
 
       return tweetSentimentData;
