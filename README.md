@@ -1,68 +1,37 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Twitter Sentiment Dashboard
 
-## Available Scripts
+## Table of Contents
+1. [Overview](#Overview)
+2. [How to Use the Live Dashboard](#How-to-Use-the-Live-Dashboard)
+3. [How to Use the Dashboard Locally](#How-to-Use-the-Dashboard-Locally)
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Overview
+### Description
+Organized analytics dashboard focused on giving the user powerful sentiment analytics using the Twitter API. Twitter is a social media application most would call the place where people voice their opinions and therefore it makes it a very powerful tools for companies, people, and industries to get truly powerful sentiment analytics of their biggest fans and biggest foes.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## How to Use the Live Dashboard
+### Link to Hosted Tool
+https://twitsentdashboard.herokuapp.com/
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Searching a Keyword on the Dashboard
+https://user-images.githubusercontent.com/47018214/166831027-c7332813-302e-4e9c-8436-693c0678e331.mov
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Using the Trending Tab to find Keywords
+https://user-images.githubusercontent.com/47018214/166831102-d8e86caa-954a-46dc-90c4-d3001ef645c6.mov
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## How to Use the Dashboard Locally
+### Instructions
+1. Clone the Repository locally
+2. In the local directory, open a terminal and run `yarn` to install all the needed packages/dependencies
+3. Open a terminal shell and run `yarn start` (this will start the server which will run on port 8080)
+4. Open another terminal shell and run `yarn start-react` (this will start the webpack on port 3000)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### What should pop up on your browser
+![Local Dashboard](https://user-images.githubusercontent.com/47018214/166832050-0e2c0a9c-5da5-4c82-a441-c4a99612a6e4.png)
