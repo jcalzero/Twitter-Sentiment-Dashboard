@@ -31,7 +31,7 @@ app.get("/analyze", (request, response) => {
 
   (async () => {
     try {
-      tweets = await getNonRetweetedTweetsByKeywordsAndDate(keyword);
+      tweets = await getNonRetweetedTweetsByKeyword(keyword);
 
       // Analyze
       const Sentianalyzer = new natural.SentimentAnalyzer('English', natural.PorterStemmer, 'afinn');
@@ -116,7 +116,7 @@ app.get("*", (req, res) => {
 // Listen
 app.listen(PORT, console.log(`Server is running on port ${PORT}...`));
 
-const getNonRetweetedTweetsByKeywordsAndDate = async (keyword) => {
+const getNonRetweetedTweetsByKeyword = async (keyword) => {
   let nextResults = '';
   const tweets = [];
   const searchParams = `${keyword} -filter:retweets`
@@ -137,6 +137,7 @@ const getNonRetweetedTweetsByKeywordsAndDate = async (keyword) => {
     nextResults = response.data.search_metadata.next_results;
   } while (tweets.length !== 500 && nextResults)
 
+  console.log(tweets.length)
   return tweets;
 };
 

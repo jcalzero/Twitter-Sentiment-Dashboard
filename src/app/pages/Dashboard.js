@@ -204,7 +204,7 @@ export default function Dashboard() {
               <h4 className="font-weight-normal mb-3">Sentiment <i className="mdi mdi-chart-line mdi-24px float-right"></i>
               </h4>
               <h2 className="mb-5">{tweetSentimentData.sentiment}</h2>
-              <h6 className="card-text">Highest level of sentiment from 1000 tweets pulled</h6>
+              <h6 className="card-text">Highest level of sentiment from 500 tweets pulled</h6>
             </div>
           </div>
         </div>
