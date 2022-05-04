@@ -5,6 +5,7 @@
 1. [Overview](#Overview)
 2. [How to Use the Live Dashboard](#How-to-Use-the-Live-Dashboard)
 3. [How to Use the Dashboard Locally](#How-to-Use-the-Dashboard-Locally)
+4. [Future Improvements](#Future-Improvements)
 
 ## Overview
 
