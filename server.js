@@ -4,6 +4,7 @@ const natural = require('natural');
 const stopword = require('stopword');
 const path = require('path');
 const axios = require('axios');
+const moment = require('moment');
 require('dotenv').config();
 
 // Port
@@ -56,28 +57,19 @@ app.post("/analyze", (request, response)=>{
           numNegative++;
         }
 
-        const foundTweeter = tweetersList.find(user => user.screenName === tweet.user.screen_name);
-
-        if (foundTweeter) {
-          foundTweeter.numOfTweets++;
-        } else {
-          tweetersList.push({screenName: tweet.user.screen_name, numOfTweets: 1, latestTweeted: tweet.createdAt});
-        }
+        tweetersList.push({screenName: tweet.user.screen_name, tweet: tweet.text, latestTweeted: parseTwitterDate(tweet.created_at), profileImageUrl: tweet.user.profile_image_url});
       });
-
-      const topTweeters = getTopTweetersList(tweetersList);
 
       response.status(200).json({
           message: "Data received",
-          sentiment: getSentimentAnalysis(overallSentimentScore(analysisOfTweets)),
+          sentiment: getSentimentAnalysis(numPositive, numNegative),
           sentiment_score: overallSentimentScore(analysisOfTweets),
           outreach: totalOutreach,
           splits: [numPositive, numNeutral, numNegative, numPositive + numNeutral + numNegative],
-          topTweeters
+          latestTweets: [tweetersList[0], tweetersList[1], tweetersList[2], tweetersList[3], tweetersList[4]]
       })
     } catch (error) {
-      response.status(501);
-      throw error;
+      response.status(500).json({ error: 'Exceeded Twitter Rate Limit' });
     }
   })();
 });
@@ -91,17 +83,13 @@ app.get("*", (req, res) => {
 app.listen(PORT, console.log(`Server is running on port ${PORT}...`));
 
 const getNonRetweetedTweetsByKeywordsAndDate = async (keyword) => {
-  const dateSince = new Date(new Date().setDate(new Date().getDate() - 1));
-  const dateSinceFormatted = `${dateSince.getFullYear()}-${dateSince.getMonth() + 1}-${dateSince.getDate()}`;
-  const queryParam = `${keyword} -filter:retweets since:${dateSinceFormatted}`;
-
   let nextResults = '';
   const tweets = [];
 
   do {
     const response = await axios({
       method: 'GET',
-      url: tweets.length === 0 ? `${baseTwitterSearchUrl}?q=${encodeURIComponent(queryParam)}&include_entities=0&lang=en&count=100` : `${baseTwitterSearchUrl}${nextResults}`,
+      url: tweets.length === 0 ? `${baseTwitterSearchUrl}?q=${encodeURIComponent(keyword)}&include_entities=0&lang=en&count=100` : `${baseTwitterSearchUrl}${nextResults}`,
       headers: {
         'Authorization': `Bearer AAAAAAAAAAAAAAAAAAAAACX7MwEAAAAApW9W9OthXQYXlV%2FFLFw1BpGNbY8%3DSzFihuUZxyo83CLgPf86SltJSDxuNLrKlbLNo1cIjJRwN3xtK2`,
       },
@@ -172,38 +160,30 @@ const overallSentimentScore = (analysisScores) => {
   return ((Math.round(sum) / analysisScores.length).toFixed(2));
 };
 
-const findTopTweeter = (tweeterList) => {
-  return (tweeterList.reduce(function(prev, current) {
-      return (prev.y > current.y) ? prev : current
-    })
-  );
-}
-
-const getTopTweetersList = (tweetersList) => {
-  const topTweeter = findTopTweeter(tweetersList);
-  let topTweeters = [];
-
-  topTweeters.push(topTweeter);
-
-  if (topTweeter.numOfTweets === 1) {
-    topTweeters = [tweetersList[0], tweetersList[1], tweetersList[2], tweetersList[3], tweetersList[4]]
-  } else {
-    for (let step = 0; step < 3; step++) {
-      tweetersList.splice(tweetersList.findIndex(tweeter => tweeter === topTweeter), 1);
-      const topTweeter = findTopTweeter(tweetersList);
-      topTweeters.push(topTweeter);
-    };
-  };
-
-  return topTweeters;
-};
-
-const getSentimentAnalysis = (sentimentScore) => {
-  if (sentimentScore < 0) {
-    return 'Negative';
-  } else if (sentimentScore === 0) {
+const getSentimentAnalysis = (numPositive, numNegative) => {
+  if (numPositive === numNegative) {
     return 'Neutral';
-  } else if (sentimentScore > 0) {
+  } else if (numPositive > numNegative) {
     return 'Positive';
   }
+
+  return 'Negative';
+};
+
+const parseTwitterDate = (tdate) => {
+  var systemDate = new Date(Date.parse(tdate));
+  var userDate = new Date();
+  var diff = Math.floor((userDate - systemDate) / 1000);
+  if (diff <= 1) {return 'just now';}
+  if (diff < 20) {return diff + ' seconds ago';}
+  if (diff < 40) {return 'half a minute ago';}
+  if (diff < 60) {return 'less than a minute ago';}
+  if (diff <= 90) {return 'one minute ago';}
+  if (diff <= 3540) {return Math.round(diff / 60) + ' minutes ago';}
+  if (diff <= 5400) {return '1 hour ago';}
+  if (diff <= 86400) {return Math.round(diff / 3600) + ' hours ago';}
+  if (diff <= 129600) {return '1 day ago';}
+  if (diff < 604800) {return Math.round(diff / 86400) + ' days ago';}
+  if (diff <= 777600) {return '1 week ago';}
+  return 'on ' + systemDate;
 }

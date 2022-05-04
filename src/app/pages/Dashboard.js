@@ -1,30 +1,75 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { useParams } from 'react-router';
 
-function Dashboard() {
-  const { keyword = '' } = useParams();
-  const chartRef = useRef();
-
+export default function Dashboard() {
+  const [tweetSentimentData, setTweetSentimentData] = useState();
+  const [loading, setLoading] = useState(false);
   const positive = '#1bcfb4';
   const neutral = '#fed713';
   const negative = '#fe7c96';
 
-  if (keyword !== 'hello world') {
-    analyzeTweets(keyword);
-  }
-  
-  const tweetsAnalysis = JSON.parse(window.localStorage.getItem('tweetSentimentData'));
+  const { keyword = '' } = useParams();
 
-  const [trafficOptions] = useState({
+  const chartRef = useRef();
+
+  const getTweetAnalysis = useCallback(() => {
+    setLoading(true);
+    analyzeTweets(keyword)
+      .then((analysis) => setTweetSentimentData(analysis))
+      .then(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (keyword !== 'hello world') {
+      getTweetAnalysis();
+    }
+  }, [keyword]);
+
+  if (loading) {
+    return (
+      <div className="page-header">
+        <h3 className="page-title align-text-center">
+          Loading...
+        </h3>
+      </div>
+    );
+  };
+
+  if (keyword === 'hello world') {
+    return (
+      <div className="page-header">
+        <h3 className="page-title align-text-center">
+          Type in a keyword, hit enter, and watch us do our magic <span role="img" aria-label="magic-ball">🔮</span>
+        </h3>
+      </div>
+    );
+  };
+
+  if (!tweetSentimentData) {
+    return (
+      <div className="page-header">
+        <h3 className="page-title align-text-center">
+          Sorry, we hit a few bumps. Please try again!
+        </h3>
+      </div>
+    );
+  }
+
+  const positivePercentage = Math.floor((tweetSentimentData.splits[0] / tweetSentimentData.splits[3]) * 100);
+  const negativePercentage = Math.floor((tweetSentimentData.splits[2] / tweetSentimentData.splits[3]) * 100);
+  const neutralPercentage = Math.ceil((tweetSentimentData.splits[1] / tweetSentimentData.splits[3]) * 100);
+
+  const trafficOptions = {
     responsive: true,
     animation: {
       animateScale: true,
       animateRotate: true
     },
     legend: false,
-  });
-  const [visitSaleOptions] = useState({
+  };
+
+  const visitSaleOptions = {
     scales: {
       yAxes: [{
         ticks: {
@@ -64,9 +109,9 @@ function Dashboard() {
         radius: 0
       }
     }
-  });
+  };
   
-  const [visitSaleData] = useState({
+  const visitSaleData = {
     labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG'],
     datasets: [
       {
@@ -103,11 +148,11 @@ function Dashboard() {
         data: [70, 10, 30, 40, 25, 50, 15, 30]
       }
     ]
-  });
+  };
 
-  const [trafficData] = useState({
+  const trafficData = {
     datasets: [{
-      data: [(tweetsAnalysis.splits[0] / tweetsAnalysis.splits[3]) * 100, tweetsAnalysis.splits[1] / tweetsAnalysis.splits[3], tweetsAnalysis.splits[2]] / tweetsAnalysis.splits[3],
+      data: [positivePercentage, neutralPercentage, negativePercentage],
         backgroundColor: [
           positive,
           neutral,
@@ -134,17 +179,7 @@ function Dashboard() {
       'Neutral',
       'Negative',
     ]
-  });
-
-  if (keyword === 'hello world') {
-    return (
-      <div className="page-header">
-        <h3 className="page-title align-text-center">
-          Type in a keyword, hit enter, and watch us do our magic <span role="img" aria-label="magic-ball">🔮</span>
-        </h3>
-      </div>
-    );
-  }
+  };
 
   return (
     <div>
@@ -152,7 +187,7 @@ function Dashboard() {
         <h3 className="page-title">
           <span className="page-title-icon bg-gradient-primary text-white mr-2">
             <i className="mdi mdi-home"></i>
-          </span> {'Analysis: '} <span className={`text-${tweetsAnalysis.sentiment === 'Positive' ? 'success' : tweetsAnalysis.sentiment === 'Neutral' ? 'warning' : 'danger'}`}>{String(keyword)}</span>
+          </span> {'Analysis: '} <span className={`text-${tweetSentimentData.sentiment === 'Positive' ? 'success' : tweetSentimentData.sentiment === 'Neutral' ? 'warning' : 'danger'}`}>{String(keyword)}</span>
         </h3>
         <nav aria-label="breadcrumb">
           <ul className="breadcrumb">
@@ -164,12 +199,12 @@ function Dashboard() {
       </div>
       <div className="row">
         <div className="col-md-4 stretch-card grid-margin">
-          <div className={`card bg-gradient-${tweetsAnalysis.sentiment === 'Positive' ? 'success' : tweetsAnalysis.sentiment === 'Neutral' ? 'warning' : 'danger'} card-img-holder text-white`}>
+          <div className={`card bg-gradient-${tweetSentimentData.sentiment === 'Positive' ? 'success' : tweetSentimentData.sentiment === 'Neutral' ? 'warning' : 'danger'} card-img-holder text-white`}>
             <div className="card-body">
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
               <h4 className="font-weight-normal mb-3">Sentiment <i className="mdi mdi-chart-line mdi-24px float-right"></i>
               </h4>
-              <h2 className="mb-5">{tweetsAnalysis.sentiment}</h2>
+              <h2 className="mb-5">{tweetSentimentData.sentiment}</h2>
               <h6 className="card-text">Highest level of sentiment from 1000 tweets pulled</h6>
             </div>
           </div>
@@ -180,7 +215,7 @@ function Dashboard() {
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
               <h4 className="font-weight-normal mb-3">Polarity <i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
               </h4>
-              <h2 className="mb-5">{tweetsAnalysis.sentiment_score}</h2>
+              <h2 className="mb-5">{tweetSentimentData.sentiment_score}</h2>
               <h6 className="card-text">Sum of polarity levels per tweet</h6>
             </div>
           </div>
@@ -191,7 +226,7 @@ function Dashboard() {
               <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
               <h4 className="font-weight-normal mb-3">Outreach <i className="mdi mdi-diamond mdi-24px float-right"></i>
               </h4>
-              <h2 className="mb-5">{tweetsAnalysis.outreach}</h2>
+              <h2 className="mb-5">{tweetSentimentData.outreach.toLocaleString('en-US')}</h2>
               <h6 className="card-text">Number of Followers per User</h6>
             </div>
           </div>
@@ -233,15 +268,15 @@ function Dashboard() {
                 <ul>
                   <li>
                     <span className="legend-dots bg-success"></span>Positive
-                    <span className="float-right">30%</span>
+                    <span className="float-right">{positivePercentage}%</span>
                   </li>
                   <li>
                     <span className="legend-dots bg-warning"></span>Neutral
-                    <span className="float-right">30%</span>
+                    <span className="float-right">{neutralPercentage}%</span>
                   </li>
                   <li>
                     <span className="legend-dots bg-danger"></span>Negative
-                    <span className="float-right">40%</span>
+                    <span className="float-right">{negativePercentage}%</span>
                   </li>
                 </ul>
               </div>
@@ -253,46 +288,46 @@ function Dashboard() {
         <div className="col-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Top Tweets</h4>
+              <h4 className="card-title">Latest Tweets</h4>
               <div className="table-responsive">
                 <table className="table">
                   <thead>
                     <tr>
                       <th> User </th>
                       <th> Tweet </th>
-                      <th> Tweeted On </th>
+                      <th> Tweeted </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>
-                        <img src={require("../../assets/images/faces/face1.jpg")} className="mr-2" alt="face" /> @DavidGrey </td>
-                      <td> Fund is not recieved </td>
-                      <td> Dec 5, 2017 </td>
+                        <img src={tweetSentimentData.latestTweets[0].profileImageUrl} className="mr-2" alt="face" /> @{tweetSentimentData.latestTweets[0].screenName} </td>
+                      <td> {truncateString(tweetSentimentData.latestTweets[0].tweet)} </td>
+                      <td> {tweetSentimentData.latestTweets[0].latestTweeted} </td>
                     </tr>
                     <tr>
-                      <td>
-                        <img src={require("../../assets/images/faces/face2.jpg")} className="mr-2" alt="face" /> @StellaJohnson </td>
-                      <td> High loading time </td>
-                      <td> Dec 12, 2017 </td>
+                    <td>
+                        <img src={tweetSentimentData.latestTweets[1].profileImageUrl} className="mr-2" alt="face" /> @{tweetSentimentData.latestTweets[1].screenName} </td>
+                      <td> {truncateString(tweetSentimentData.latestTweets[1].tweet)} </td>
+                      <td> {tweetSentimentData.latestTweets[1].latestTweeted} </td>
                     </tr>
                     <tr>
-                      <td>
-                        <img src={require("../../assets/images/faces/face3.jpg")} className="mr-2" alt="face" /> @MarinaMichel </td>
-                      <td> Website down for one week </td>
-                      <td> Dec 16, 2017 </td>
+                    <td>
+                        <img src={tweetSentimentData.latestTweets[2].profileImageUrl} className="mr-2" alt="face" /> @{tweetSentimentData.latestTweets[2].screenName} </td>
+                      <td> {truncateString(tweetSentimentData.latestTweets[2].tweet)} </td>
+                      <td> {tweetSentimentData.latestTweets[2].latestTweeted} </td>
                     </tr>
                     <tr>
-                      <td>
-                        <img src={require("../../assets/images/faces/face4.jpg")} className="mr-2" alt="face" /> @JohnDoe </td>
-                      <td> Loosing control on server </td>
-                      <td> Dec 3, 2017 </td>
+                    <td>
+                        <img src={tweetSentimentData.latestTweets[3].profileImageUrl} className="mr-2" alt="face" /> @{tweetSentimentData.latestTweets[3].screenName} </td>
+                      <td> {truncateString(tweetSentimentData.latestTweets[3].tweet)} </td>
+                      <td> {tweetSentimentData.latestTweets[3].latestTweeted} </td>
                     </tr>
                     <tr>
-                      <td>
-                        <img src={require("../../assets/images/faces/face5.jpg")} className="mr-2" alt="face" /> @MarylinAbs </td>
-                      <td> Music make me lose control </td>
-                      <td> Dec 3, 2017 </td>
+                    <td>
+                        <img src={tweetSentimentData.latestTweets[4].profileImageUrl} className="mr-2" alt="face" /> @{tweetSentimentData.latestTweets[4].screenName} </td>
+                      <td> {truncateString(tweetSentimentData.latestTweets[4].tweet)} </td>
+                      <td> {tweetSentimentData.latestTweets[4].latestTweeted} </td>
                     </tr>
                   </tbody>
                 </table>
@@ -305,30 +340,45 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
-
-const analyzeTweets = (keyword) => {
+async function analyzeTweets(keyword) {
   const options = {
     method: 'POST',
     body: JSON.stringify({ keyword }),
     headers: new Headers({ 'Content-Type': 'application/json' })
   }
 
-  fetch('/analyze', options)
-    .then(res => res.json())
-    .then (({ sentiment, sentiment_score, outreach, splits, topTweeters }) => {
+  const responseData = await fetch('/analyze', options)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      
+      throw new Error('Exceeded Twitter API Rate Limit');
+    })
+    .then(({ sentiment, sentiment_score, outreach, splits, latestTweets }) => {
       const tweetSentimentData = {
         keyword,
         sentiment,
         sentiment_score,
         outreach,
         splits,
-        topTweeters
+        latestTweets
       };
 
-      window.localStorage.setItem('tweetSentimentData', JSON.stringify(tweetSentimentData));
+      return tweetSentimentData;
     })
-    .catch(err => {
-      console.log('There was an error processing your request!');
+    .catch((error) => {
+      console.error('Error:', error);
+      return null;
     })
-}
+
+  return responseData;
+};
+
+const truncateString = (str, num = 55) => {
+  if (str.length > num) {
+    return str.slice(0, num) + "...";
+  } else {
+    return str;
+  }
+};
