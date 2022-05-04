@@ -62,4 +62,6 @@ https://user-images.githubusercontent.com/47018214/166831102-d8e86caa-954a-46dc-
 9. Training Natural Language Processing model for higher accuracy of sentiment analysis
 
 10. Trending topics queried by User Location rather than just the United States
+
+11. Adding API documentation so it can be used publicly outside of the dashboard
 ```
