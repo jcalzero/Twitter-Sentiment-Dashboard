@@ -137,7 +137,6 @@ const getNonRetweetedTweetsByKeyword = async (keyword) => {
     nextResults = response.data.search_metadata.next_results;
   } while (tweets.length !== 500 && nextResults)
 
-  console.log(tweets.length)
   return tweets;
 };
 
