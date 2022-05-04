@@ -17,15 +17,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/",express.static(__dirname + "/build"));
 
 const baseTwitterSearchUrl = 'https://api.twitter.com/1.1/search/tweets.json';
-const defaultFetchOptions = {
-    method: 'GET',
-    headers: {
-        'Authorization': `Bearer ${process.env.BEARER_KEY}`,
-    },
-};
+const baseTwitterTrendsUrl = 'https://api.twitter.com/1.1/trends/place.json';
 
-app.post("/analyze", (request, response)=>{
-  let { keyword } = request.body;
+app.get("/analyze", (request, response) => {
+  const keyword = request.headers.keyword;
 
   const tweetersList = [];
   let tweets = [];
@@ -74,6 +69,32 @@ app.post("/analyze", (request, response)=>{
   })();
 });
 
+app.get("/trending", (request, response) =>{
+  const trendingList = [];
+
+  (async () => {
+    try {
+      const responseData = await axios({
+        method: 'GET',
+        url: `${baseTwitterTrendsUrl}?id=23424977`,
+        headers: {
+          'Authorization': `Bearer ${process.env.BEARER_KEY}`,
+        },
+      });
+
+      responseData.data[0].trends.forEach((trend) => {
+        trendingList.push(trend.name);
+      })
+
+      response.status(200).json({
+          trends: trendingList,
+      })
+    } catch (error) {
+      response.status(500).json({ error: 'Exceeded Twitter Rate Limit' });
+    }
+  })();
+});
+
 // Right before your app.listen(), add this:
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
@@ -85,13 +106,14 @@ app.listen(PORT, console.log(`Server is running on port ${PORT}...`));
 const getNonRetweetedTweetsByKeywordsAndDate = async (keyword) => {
   let nextResults = '';
   const tweets = [];
+  const searchParams = `${keyword} -filter:retweets`
 
   do {
     const response = await axios({
       method: 'GET',
-      url: tweets.length === 0 ? `${baseTwitterSearchUrl}?q=${encodeURIComponent(keyword)}&include_entities=0&lang=en&count=100` : `${baseTwitterSearchUrl}${nextResults}`,
+      url: tweets.length === 0 ? `${baseTwitterSearchUrl}?q=${encodeURIComponent(searchParams)}&include_entities=0&lang=en&count=100` : `${baseTwitterSearchUrl}${nextResults}`,
       headers: {
-        'Authorization': `Bearer AAAAAAAAAAAAAAAAAAAAACX7MwEAAAAApW9W9OthXQYXlV%2FFLFw1BpGNbY8%3DSzFihuUZxyo83CLgPf86SltJSDxuNLrKlbLNo1cIjJRwN3xtK2`,
+        'Authorization': `Bearer ${process.env.BEARER_KEY}`,
       },
     });
   

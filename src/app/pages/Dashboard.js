@@ -341,9 +341,8 @@ export default function Dashboard() {
 
 async function analyzeTweets(keyword) {
   const options = {
-    method: 'POST',
-    body: JSON.stringify({ keyword }),
-    headers: new Headers({ 'Content-Type': 'application/json' })
+    method: 'GET',
+    headers: new Headers({ 'Content-Type': 'application/json', 'keyword': keyword })
   }
 
   const responseData = await fetch('/analyze', options)
