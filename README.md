@@ -55,7 +55,7 @@ https://user-images.githubusercontent.com/47018214/166831102-d8e86caa-954a-46dc-
 
 6. Dark Mode
 
-7. Additional powerful analytics
+7. Additional more powerful analytics
 
 8. Adding link to latest tweets table so clicking on a row will take you to the full tweet on Twitter
 
