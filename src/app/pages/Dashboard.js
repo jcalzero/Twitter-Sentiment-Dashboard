@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { useParams } from 'react-router';
 
