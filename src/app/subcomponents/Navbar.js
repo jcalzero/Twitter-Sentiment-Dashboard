@@ -8,35 +8,10 @@ function Navbar() {
     event.preventDefault();
   }
 
-  function analyzeTweets(keyword) {
-    const sentence = keyword;
-
+  function redirect(keyword) {
     history.push({
       pathname: `/dashboard/${keyword}`
     });
-
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({ sentence }),
-      headers: new Headers({ 'Content-Type': 'application/json' })
-    }
-  
-    fetch('/analyze', options)
-      .then(res => res.json())
-      .then (({ sentiment_score }) => {
-        if (sentiment_score < 0) {
-          console.log('Negative');
-        };
-        if (sentiment_score === 0) {
-          console.log('Neutral');
-        }
-        if (sentiment_score > 0) {
-          console.log('Positive');
-        }
-      })
-      .catch(err => {
-        console.log('There was an error processing your request!');
-      })
   }
 
   function toggleOffcanvas() {
@@ -61,7 +36,7 @@ function Navbar() {
               <input
                 onKeyPress={(event) => {
                   if (event.key === "Enter") {
-                    analyzeTweets(event.target.value);
+                    redirect(event.target.value);
                   }
                 }}
                 type="text"
