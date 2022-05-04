@@ -37,6 +37,7 @@ function Navbar() {
                 onKeyPress={(event) => {
                   if (event.key === "Enter") {
                     redirect(event.target.value);
+                    event.target.value = ''
                   }
                 }}
                 type="text"
