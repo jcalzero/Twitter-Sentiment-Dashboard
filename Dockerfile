@@ -33,5 +33,6 @@ COPY --from=builder /app /app
 WORKDIR /app
 ENV NODE_ENV production
 ENV PATH /root/.volta/bin:$PATH
+RUN node node_modules/.bin/react-scripts build
 
 CMD [ "yarn", "run", "start-prod" ]

@@ -63,7 +63,7 @@
     "scripts": {
         "start-react": "react-scripts start",
         "build-react": "react-scripts build",
-        "start-prod": "yarn build-react && yarn start",
+        "start-prod": "yarn start",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "start": "nodemon server.js --ignore client"
@@ -87,5 +87,8 @@
         "node": "16.x",
         "yarn": "1.22"
     },
-    "proxy": "http://localhost:8080"
+    "proxy": "http://localhost:8080",
+    "resolutions": {
+        "react-scripts/eslint-webpack-plugin": "2.4.1"
+    }
 }
